@@ -5,7 +5,8 @@
 (deftest test-gen-primes
   (is (= (gen-primes 0) []))
   (is (= (gen-primes 1) [2]))
-  (is (= (gen-primes 5) [2 3 5 7 11])))
+  (is (= (gen-primes 5) [2 3 5 7 11]))
+  (is (= (count (gen-primes 10000)) 10000)))
 
 (deftest test-multiplication-table
   (is (= (multiplication-table []) []))

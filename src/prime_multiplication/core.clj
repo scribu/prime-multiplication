@@ -8,13 +8,13 @@
 (defn gen-primes
   "Return a vector containing the first n prime numbers."
   [n]
-  (letfn [(compute [primes x]
-            (if (>= (count primes) n)
-              (take n primes)
-              (if (not-any? (partial divisible? x) primes)
-                (compute (conj primes x) (+ 2 x))
-                (compute primes (+ 2 x)))))]
-    (compute [2] 3)))
+  (loop [primes [2] x 3]
+    (if (>= (count primes) n)
+      (take n primes)
+      (let [new-primes (if (not-any? (partial divisible? x) primes)
+                         (conj primes x)
+                         primes)]
+        (recur new-primes (+ 2 x))))))
 
 (defn multiplication-table
   "Generate a multiplication table from a vector of numbers."
