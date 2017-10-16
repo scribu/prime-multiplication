@@ -2,6 +2,10 @@
   (:gen-class))
 
 (defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+  [in]
+  (let [n (Integer/parseInt in 10)]
+    (if (< n 0)
+      (do
+        (println "The number must be a positive integer.")
+        (System/exit 1))
+      (println "Number:" n))))

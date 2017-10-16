@@ -1,36 +1,25 @@
-# prime-multiplication
+# Prime Multiplication
 
-FIXME: description
+This is just a little coding exercise in Clojure.
 
-## Installation
-
-Download from http://example.com/FIXME.
+Input: A positive integer *n*.  
+Output: A multiplication table of the first *n* prime numbers.
 
 ## Usage
 
-FIXME: explanation
+You can run the program using Leiningen:
 
-    $ java -jar prime-multiplication-0.1.0-standalone.jar [args]
+    $ lein run 10
 
-## Options
+## Running tests
 
-FIXME: listing of options this app accepts.
+Unit tests can also be run via Leiningen:
 
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+	$ lein test
 
 ## License
 
-Copyright © 2017 FIXME
+Copyright © 2017 Cristi Burcă
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
