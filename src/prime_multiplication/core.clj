@@ -1,4 +1,5 @@
 (ns prime-multiplication.core
+  (:require [clojure.pprint :refer [print-table]])
   (:gen-class))
 
 (defn divisible? [a b]
@@ -18,6 +19,15 @@
                 (compute acc (inc x)))))]
     (compute [] 2)))
 
+(defn print-multiplication-table
+  "Generate a multiplication matrix from a vector of numbers and print it."
+  [items]
+  (let [header (cons "/" items)
+        rows (for [x items]
+               (let [row (for [y items] [y (* x y)])]
+                 (assoc (into {} row) "/" x)))]
+    (print-table header rows)))
+
 (defn -main
   [in]
   (let [n (Integer/parseInt in 10)]
@@ -25,4 +35,6 @@
       (do
         (println "The number must be a positive integer.")
         (System/exit 1))
-      (println "Number:" n))))
+      (-> n
+          gen-primes
+          print-multiplication-table))))
