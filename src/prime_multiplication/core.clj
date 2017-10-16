@@ -16,14 +16,12 @@
                 (compute primes (+ 2 x)))))]
     (compute [2] 3)))
 
-(defn print-multiplication-table
-  "Generate a multiplication matrix from a vector of numbers and print it."
+(defn multiplication-table
+  "Generate a multiplication table from a vector of numbers."
   [items]
-  (let [header (cons "/" items)
-        rows (for [x items]
-               (let [row (for [y items] [y (* x y)])]
-                 (assoc (into {} row) "/" x)))]
-    (print-table header rows)))
+  (for [x items]
+    (let [row (for [y items] [y (* x y)])]
+      (assoc (into (sorted-map) row) 0 x))))
 
 (defn -main
   [in]
@@ -34,4 +32,5 @@
         (System/exit 1))
       (-> n
           gen-primes
-          print-multiplication-table))))
+          multiplication-table
+          print-table))))
