@@ -41,15 +41,10 @@
                         new-ps (psieve-next ps)]
                     (recur (+ 2 i) (update-step D i new-step) new-ps))))))))))
 
-(defn gen-primes
-  "Return a vector containing the first n prime numbers."
-  [n]
-  (loop [i n
-         primes []
-         sieve (psieve-init)]
-    (if (zero? i)
-      primes
-      (recur (dec i) (conj primes (psieve-current sieve)) (psieve-next sieve)))))
+(defn prime-sieve
+  "Returns an infinite sequence of primes."
+  []
+  (map psieve-current (iterate psieve-next (psieve-init))))
 
 (defn multiplication-table
   "Generate a multiplication table from a vector of numbers."
@@ -65,7 +60,7 @@
       (do
         (println "The number must be a positive integer.")
         (System/exit 1))
-      (-> n
-          gen-primes
-          multiplication-table
-          print-table))))
+      (->> (prime-sieve)
+           (take n)
+           multiplication-table
+           print-table))))
