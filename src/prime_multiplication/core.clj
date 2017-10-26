@@ -2,49 +2,16 @@
   (:require [clojure.pprint :refer [print-table]])
   (:gen-class))
 
-; Infinite sieve logic ported from answer by Will Ness: https://stackoverflow.com/a/10733621/97998
-(defn psieve-init
-  "Initialise a prime sieve."
-  []
-  {:last 2 :precomputed [3], :i 5, :D {}})
+(defn- divisible [a b]
+  (zero? (mod a b)))
 
-(defn psieve-current
-  "Return the current value computed by the sieve."
-  [state]
-  (state :last))
-
-(defn psieve-next
-  "Find the next prime."
-  [state]
-  (if-let [[x & xs] (state :precomputed)]
-    (assoc state :last x :precomputed xs)
-    (let [find-next-i (fn [i step D]
-                        (loop [j i]
-                          (if (not (contains? D j))
-                            j
-                            (recur (+ step j)))))
-         update-step (fn [D i step]
-                        (let [j (find-next-i (+ step i) step D)]
-                          (assoc D j step)))]
-      (loop [i (state :i)
-             D (state :D)
-             ps (state :ps (psieve-next (psieve-init)))]
-        (let [p (psieve-current ps)
-              step (D i)]
-          (if (not (nil? step)) ; composite
-            (recur (+ 2 i) (update-step (dissoc D i) i step) ps)
-            (if (< i (* p p)) ; prime
-              {:last i, :i (+ 2 i), :D D, :ps ps}
-              (do ; composite, = p*p
-                  (assert (= i (* p p)))
-                  (let [new-step (* 2 (psieve-current ps))
-                        new-ps (psieve-next ps)]
-                    (recur (+ 2 i) (update-step D i new-step) new-ps))))))))))
-
+; Infinite sieve logic ported from http://code.activestate.com/recipes/117119-sieve-of-eratosthenes/#c3
 (defn prime-sieve
   "Returns an infinite sequence of primes."
   []
-  (map psieve-current (iterate psieve-next (psieve-init))))
+  (letfn [(sieve [[p & x]]
+               (cons p (sieve (filter #(not (divisible % p)) x))))]
+    (sieve (drop 2 (range)))))
 
 (defn multiplication-table
   "Generate a multiplication table from a vector of numbers."
